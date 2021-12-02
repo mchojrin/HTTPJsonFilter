@@ -11,12 +11,13 @@ $offerCollection = $httpReader->read($jsonData);
 
 $subcommand = $argv[1];
 
+$ProductIterator = $offerCollection->getIterator();
 switch ($subcommand) {
     case 'count_by_price_range':
-        echo iterator_count(new PriceFilterIterator($offerCollection->getIterator(), $argv[2], $argv[3]));
+        echo iterator_count(new PriceFilterIterator($ProductIterator, $argv[2], $argv[3]));
         break;
     case 'count_by_vendor_id':
-        echo iterator_count(new VendorIdFilterIterator($offerCollection->getIterator(), intval($argv[2])));
+        echo iterator_count(new VendorIdFilterIterator($ProductIterator, intval($argv[2])));
         break;
 }
 
