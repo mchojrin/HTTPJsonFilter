@@ -5,20 +5,17 @@ spl_autoload_register(function (string $className) {
 });
 
 $httpReader = new HTTPReader();
-$jsonData = file_get_contents($_ENV['OFFERS_ENDPOINT']);
 
-$offerCollection = $httpReader->read($jsonData);
-
-$subcommand = $argv[1];
-
+$offerCollection = $httpReader->read(file_get_contents($_ENV['OFFERS_ENDPOINT']));
 $productIterator = $offerCollection->getIterator();
-switch ($subcommand) {
-    case 'count_by_price_range':
-        echo iterator_count(new PriceFilterIterator($productIterator, $argv[2], $argv[3]));
-        break;
-    case 'count_by_vendor_id':
-        echo iterator_count(new VendorIdFilterIterator($productIterator, intval($argv[2])));
-        break;
-}
 
+$subcommand2FilterMapping = [
+    'count_by_price_range' => function (Iterator $productIterator, array $argv) {
+        return new PriceFilterIterator($productIterator, $argv[2], $argv[3]);
+    },
+    'count_by_vendor_id' => function(Iterator $productIterator, array $argv) {
+        return new VendorIdFilterIterator($productIterator, intval($argv[2]));
+    },
+];
 
+echo iterator_count($subcommand2FilterMapping[$argv[1]]($productIterator, $argv));
