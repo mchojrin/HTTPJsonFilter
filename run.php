@@ -6,7 +6,7 @@ spl_autoload_register(function (string $className) {
 
 $httpReader = new HTTPReader();
 
-$offerCollection = $httpReader->read(file_get_contents($_ENV['OFFERS_ENDPOINT']));
+$offerCollection = $httpReader->read(file_get_contents(getenv('OFFERS_ENDPOINT')));
 $productIterator = $offerCollection->getIterator();
 
 $subcommand2FilterMapping = [
