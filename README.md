@@ -32,7 +32,8 @@ Available sub-commands are:
 * `count_by_vendor_id`
 * `count_by_price_range`
 
-+Examples+:
+Examples:
+=========
 
 ```command
 OFFERS_ENDPOINT=http://localhost:8007 php run.php count_by_vendor_id 35
